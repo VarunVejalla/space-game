@@ -11,5 +11,10 @@ config_version=5
 [application]
 
 config/name="space-game"
+run/main_scene="res://Scenes/Universe.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+AllObjects="*res://Scripts/AllObjects.gd"
