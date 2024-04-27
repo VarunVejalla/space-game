@@ -1,44 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://dcpby7ggno1u"]
+[gd_scene load_steps=4 format=3 uid="uid://dcpby7ggno1u"]
 
 [ext_resource type="Texture2D" uid="uid://s85walqnbody" path="res://star_background.jpg" id="2_y2ntg"]
 [ext_resource type="PackedScene" uid="uid://d2vatfgef27b0" path="res://Scenes/Planet.tscn" id="3_768bh"]
+[ext_resource type="PackedScene" uid="uid://njf83jv628a8" path="res://Scenes/spaceship.tscn" id="3_pb4t3"]
 
 [node name="planets" type="Node2D"]
 
-[node name="Sun" parent="." instance=ExtResource("3_768bh")]
-light_mask = 1023
-visibility_layer = 1023
-position = Vector2(525, 288)
-mass = 6000.0
-gravity_scale = 0.0
-radius = 100.0
-velocity = Vector2(0, 100)
-color = Color(1, 1, 0, 0.882353)
-
-[node name="Camera2D" type="Camera2D" parent="Sun"]
-process_callback = 0
-
 [node name="Earth" parent="." instance=ExtResource("3_768bh")]
-position = Vector2(853, 290)
+position = Vector2(574, 549)
+mass = 1000.0
 gravity_scale = 0.0
-radius = 10.0
-velocity = Vector2(0, 700)
+radius = 200.0
 color = Color(0, 0, 1, 1)
 
-[node name="Mars" parent="." instance=ExtResource("3_768bh")]
-position = Vector2(970, 300)
-radius = 10.0
-velocity = Vector2(0, 600)
-color = Color(0.372549, 0, 0, 1)
-
-[node name="Moon" parent="." instance=ExtResource("3_768bh")]
-top_level = true
-position = Vector2(845, 276)
-mass = 0.1
-radius = 8.0
-velocity = Vector2(0, 700)
+[node name="Enemy" parent="." instance=ExtResource("3_768bh")]
+position = Vector2(-500, 100)
+mass = 1000.0
+radius = 400.0
+color = Color(1, 0, 0, 1)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+visible = false
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 modulate = Color(1, 1, 1, 0.443137)
@@ -47,35 +29,27 @@ motion_mirroring = Vector2(1152, 648)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 show_behind_parent = true
-position = Vector2(-49, -25)
+position = Vector2(-87, 2)
 texture = ExtResource("2_y2ntg")
-centered = false
+flip_h = true
+flip_v = true
 
-[node name="Uranus" parent="." instance=ExtResource("3_768bh")]
-position = Vector2(247, 315)
-mass = 50.0
-radius = 30.0
-color = Color(0, 0.815686, 0.811765, 1)
+[node name="player" parent="." instance=ExtResource("3_pb4t3")]
+position = Vector2(822, 301)
+gravity_scale = 0.0
 
-[node name="Mystery" parent="." instance=ExtResource("3_768bh")]
-position = Vector2(555, 459)
-mass = 20.0
-radius = 20.0
-velocity = Vector2(100, 0)
+[node name="Camera2D" type="Camera2D" parent="player"]
+zoom = Vector2(0.3, 0.3)
+process_callback = 0
 
-[node name="Sun2" parent="." instance=ExtResource("3_768bh")]
-position = Vector2(330, 221)
-mass = 600.0
-radius = 50.0
-color = Color(1, 0.509804, 0, 1)
+[node name="DisplayedTextLayer" type="CanvasLayer" parent="."]
 
-[node name="Purple" parent="." instance=ExtResource("3_768bh")]
-position = Vector2(970, 168)
-mass = 50.0
-radius = 20.0
-color = Color(0.701961, 0, 0.509804, 1)
+[node name="DisplayedText" type="RichTextLabel" parent="DisplayedTextLayer"]
+offset_left = 285.0
+offset_top = 68.0
+offset_right = 638.0
+offset_bottom = 148.0
+text = "Detonate the nuclear bomb you're carrying at the enemy planet to defeat the invaders!
+"
 
-[node name="Planet" parent="." instance=ExtResource("3_768bh")]
-mass = 10.0
-radius = 10.0
-color = Color(0.545098, 0.937255, 0, 1)
+[connection signal="body_entered" from="player" to="Enemy" method="_on_player_body_entered"]
