@@ -1,12 +1,5 @@
-extends Node
+extends CanvasLayer
 
-var planets = []
-
-const G = 100000
-
-var center;
-
-var player_location;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -2,13 +2,16 @@ extends RigidBody2D
 
 const MY_ACCEL = 3000.0
 
+var still_alive = true;
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 #var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 #func _ready():
-	#AllObjects.planets.append(self)
+	#connect("body_entered", self, "_on_Player_body_entered")
 
 func _integrate_forces(state):
+	print(AllObjects.player_location)
 	var allPlanets = AllObjects.planets
 	var force = Vector2(0,0)
 	##print(get_parent().get_tree_string_pretty())
@@ -41,23 +44,17 @@ func _integrate_forces(state):
 				force += thisForce
 	
 	var direction = Vector2(Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"), Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")).normalized()
+	
+	if !still_alive:
+		direction = Vector2(0,0);
+	
 	force += mass * MY_ACCEL * direction
 	
 	
 	
 	state.apply_force(force)
-
-#func _physics_process(delta):
-	## Handle jump.
-	#if Input.is_action_just_pressed("ui_accept"):
-		#
-#
-	## Get the input direction and handle the movement/deceleration.
-	## As good practice, you should replace UI actions with custom gameplay actions.
-	#var direction = Input.get_axis("ui_left", "ui_right")
-	#if direction:
-		#velocity.x = direction * SPEED
-	#else:
-		#velocity.x = move_toward(velocity.x, 0, SPEED)
-#
-	#move_and_slide()
+	AllObjects.player_location = global_position
+func _on_Player_body_entered(body):
+	if body.name == "bullet":  # Assuming the projectiles are named "Projectile"
+		still_alive = false
+		queue_free()  # Destroy the player or handle the game over logic

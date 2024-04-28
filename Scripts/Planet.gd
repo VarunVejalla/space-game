@@ -3,10 +3,6 @@ extends RigidBody2D
 @export var radius : float
 @export var velocity : Vector2
 @export var color : Color
-#@export var is_center : bool
-
-#var oldFlag = true
-#var flag = true
 
 #mass is already a variable in RigidBody2D
 
@@ -19,14 +15,11 @@ func _ready():
 	linear_velocity = velocity
 	AllObjects.planets.append(self)
 	#set_physics_process(true)
-	var collision_shape = get_node("CollisionShape2D")
-	var new_shape = CircleShape2D.new()
-	new_shape.radius = radius
-	#$CollisionShape2D = new_shape
-	collision_shape.shape = new_shape
-	#self.c
-	#self.CollisionShape2D.shape.radius = radius
-	gravity_scale = 0
+	var collision_shape = get_node("PlanetBody")
+	var planet_body = CircleShape2D.new()
+	planet_body.radius = radius
+	collision_shape.shape = planet_body
+	gravity_scale = 0	
 	#if is_center:
 		#AllObjects.center = self
 #

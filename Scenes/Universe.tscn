@@ -1,26 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://dcpby7ggno1u"]
+[gd_scene load_steps=8 format=3 uid="uid://dcpby7ggno1u"]
 
+[ext_resource type="Script" path="res://Scenes/spaceship.gd" id="2_kf2hc"]
 [ext_resource type="Texture2D" uid="uid://s85walqnbody" path="res://star_background.jpg" id="2_y2ntg"]
 [ext_resource type="PackedScene" uid="uid://d2vatfgef27b0" path="res://Scenes/Planet.tscn" id="3_768bh"]
-[ext_resource type="PackedScene" uid="uid://njf83jv628a8" path="res://Scenes/spaceship.tscn" id="3_pb4t3"]
+[ext_resource type="Script" path="res://Scenes/DisplayedText.gd" id="4_cgi4f"]
+[ext_resource type="PackedScene" uid="uid://84pfhhqc0nsp" path="res://Scenes/Enemy.tscn" id="5_0c3ju"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b1prp"]
+radius = 300.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_05bxr"]
+radius = 400.0
 
 [node name="planets" type="Node2D"]
 
-[node name="Earth" parent="." instance=ExtResource("3_768bh")]
-position = Vector2(574, 549)
-mass = 1000.0
-gravity_scale = 0.0
-radius = 200.0
-color = Color(0, 0, 1, 1)
-
-[node name="Enemy" parent="." instance=ExtResource("3_768bh")]
-position = Vector2(-500, 100)
-mass = 1000.0
-radius = 400.0
-color = Color(1, 0, 0, 1)
-
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-visible = false
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 modulate = Color(1, 1, 1, 0.443137)
@@ -34,9 +28,13 @@ texture = ExtResource("2_y2ntg")
 flip_h = true
 flip_v = true
 
-[node name="player" parent="." instance=ExtResource("3_pb4t3")]
-position = Vector2(822, 301)
+[node name="player" type="RigidBody2D" parent="."]
+position = Vector2(758, 365)
 gravity_scale = 0.0
+script = ExtResource("2_kf2hc")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="player"]
+polygon = PackedVector2Array(-20, 0, 0, -30, 20, 0, 10, 10, 15, 20, -15, 20, -10, 10)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
 zoom = Vector2(0.3, 0.3)
@@ -51,5 +49,36 @@ offset_right = 638.0
 offset_bottom = 148.0
 text = "Detonate the nuclear bomb you're carrying at the enemy planet to defeat the invaders!
 "
+script = ExtResource("4_cgi4f")
 
-[connection signal="body_entered" from="player" to="Enemy" method="_on_player_body_entered"]
+[node name="Earth" parent="." instance=ExtResource("3_768bh")]
+position = Vector2(574, 549)
+mass = 1000.0
+gravity_scale = 0.0
+radius = 200.0
+color = Color(0, 0, 1, 1)
+
+[node name="EarthAtmosphere" type="Area2D" parent="Earth"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Earth/EarthAtmosphere"]
+shape = SubResource("CircleShape2D_b1prp")
+
+[node name="EnemyPlanet" parent="." instance=ExtResource("3_768bh")]
+position = Vector2(-500, 200)
+mass = 1000.0
+gravity_scale = 0.0
+radius = 200.0
+color = Color(0, 1, 0, 1)
+
+[node name="EnemyAtmosphere" type="Area2D" parent="EnemyPlanet"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyPlanet/EnemyAtmosphere"]
+shape = SubResource("CircleShape2D_05bxr")
+
+[node name="RigidBody2D" parent="." instance=ExtResource("5_0c3ju")]
+gravity_scale = 0.0
+
+[connection signal="body_entered" from="Earth/EarthAtmosphere" to="DisplayedTextLayer/DisplayedText" method="_on_earth_atmosphere_body_entered"]
+[connection signal="body_exited" from="Earth/EarthAtmosphere" to="DisplayedTextLayer/DisplayedText" method="_on_earth_atmosphere_body_exited"]
+[connection signal="body_entered" from="EnemyPlanet/EnemyAtmosphere" to="DisplayedTextLayer/DisplayedText" method="_on_enemy_atmosphere_body_entered"]
+[connection signal="body_exited" from="EnemyPlanet/EnemyAtmosphere" to="DisplayedTextLayer/DisplayedText" method="_on_enemy_atmosphere_body_exited"]
