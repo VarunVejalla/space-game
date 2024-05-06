@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://njf83jv628a8"]
-
-[ext_resource type="Script" path="res://Scenes/spaceship.gd" id="1_w12u3"]
-
-[node name="RigidBody2D" type="RigidBody2D"]
-script = ExtResource("1_w12u3")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(-20, 0, 0, -30, 20, 0, 10, 10, 15, 20, -15, 20, -10, 10)

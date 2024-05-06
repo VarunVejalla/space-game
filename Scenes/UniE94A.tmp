@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcpby7ggno1u"]
+[gd_scene load_steps=8 format=3 uid="uid://dcpby7ggno1u"]
 
 [ext_resource type="Texture2D" uid="uid://s85walqnbody" path="res://star_background.jpg" id="2_y2ntg"]
-[ext_resource type="Script" path="res://Text/FuelLabel.gd" id="3_5t4f0"]
-[ext_resource type="PackedScene" uid="uid://d2vatfgef27b0" path="res://Planet/Planet.tscn" id="3_768bh"]
-[ext_resource type="Script" path="res://Text/DisplayedText.gd" id="4_cgi4f"]
+[ext_resource type="PackedScene" uid="uid://d2vatfgef27b0" path="res://Scenes/Planet.tscn" id="3_768bh"]
+[ext_resource type="Script" path="res://Scenes/DisplayedText.gd" id="4_cgi4f"]
 [ext_resource type="PackedScene" uid="uid://jogyu6amdofk" path="res://Player/player.tscn" id="6_a5o0r"]
 [ext_resource type="PackedScene" uid="uid://bwodlfhu0ts4e" path="res://Enemies/enemy_ship_small.tscn" id="6_f6uq3"]
 
@@ -40,11 +39,6 @@ offset_bottom = 148.0
 text = "Detonate the nuclear bomb you're carrying at the enemy planet to defeat the invaders!
 "
 script = ExtResource("4_cgi4f")
-
-[node name="FuelLabel" type="Label" parent="DisplayedTextLayer"]
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("3_5t4f0")
 
 [node name="Earth" parent="." instance=ExtResource("3_768bh")]
 position = Vector2(700, 700)
@@ -90,12 +84,11 @@ color = Color(1, 0, 0, 1)
 
 [node name="Obstacle2" parent="." instance=ExtResource("3_768bh")]
 position = Vector2(-200, -3000)
-mass = 15000.0
+mass = 10000.0
 radius = 400.0
 color = Color(1, 0, 0, 1)
 
 [node name="player" parent="." instance=ExtResource("6_a5o0r")]
-position = Vector2(500, 450)
 collision_layer = 2
 
 [node name="Camera2D" type="Camera2D" parent="player"]

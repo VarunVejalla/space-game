@@ -8,6 +8,9 @@ var center;
 
 var player_location;
 
+var fuel;
+var alive = true;
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.

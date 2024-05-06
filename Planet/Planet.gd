@@ -3,6 +3,10 @@ extends RigidBody2D
 @export var radius : float
 @export var velocity : Vector2
 @export var color : Color
+@export var orbit : Vector2 # point that it will orbit around
+@export var orbit_time : float # time for one rotation
+
+# orbit stuff is so planets have nice orbits unlike with "real" gravity
 
 #mass is already a variable in RigidBody2D
 
@@ -19,16 +23,19 @@ func _ready():
 	var planet_body = CircleShape2D.new()
 	planet_body.radius = radius
 	collision_shape.shape = planet_body
-	gravity_scale = 0	
-	#if is_center:
-		#AllObjects.center = self
-#
-## Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _physics_process(delta):
-	#pass
+	gravity_scale = 0 # fuck gravity
 
-#func _process(delta):
-	#queue_redraw()
+func _process(delta):
+	if orbit_time > 0.001: #for convenience
+		var delta_position = position - orbit
+		var angle = atan2(delta_position.y, delta_position.x)
+		angle = 2*PI/orbit_time * delta
+		position = orbit + (position-orbit).rotated(angle)
+	
+	
+	#update_position()
+	
+	
 
 #func _integrate_forces(state):
 	#var allPlanets = AllObjects.planets
